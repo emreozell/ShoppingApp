@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.shoppingapp.R
 import com.example.shoppingapp.databinding.CartRecyclerviewItemBinding
 import com.example.shoppingapp.domain.model.Item
 
@@ -51,7 +52,7 @@ class CartAdapter(val context: Context) :
                     if (item.stock == item.totalOrder) {
                         Toast.makeText(
                             context,
-                            "Stockta yeterli ürün bulunmamaktadır.",
+                            context.getString(R.string.stock_not_enough),
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {

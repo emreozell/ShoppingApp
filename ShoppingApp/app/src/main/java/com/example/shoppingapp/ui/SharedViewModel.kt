@@ -5,12 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoppingapp.core.ResponseStatus
+import com.example.shoppingapp.domain.model.Item
+import com.example.shoppingapp.domain.model.Posts
 import com.example.shoppingapp.domain.useCase.dataBaseUseCase
 import com.example.shoppingapp.domain.useCase.deleteAllItemsUseCase
 import com.example.shoppingapp.domain.useCase.getItemsUseCase
 import com.example.shoppingapp.domain.useCase.getLocalItemSizeUseCase
 import com.example.shoppingapp.domain.useCase.getLocalItemsUseCase
-import com.example.shoppingapp.domain.model.Item
+import com.example.shoppingapp.domain.useCase.getTotalPriceUseCase
+import com.example.shoppingapp.domain.useCase.postOrdersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,22 +28,30 @@ class SharedViewModel @Inject constructor(
     private val dataBaseUseCase: dataBaseUseCase,
     private val getLocalItemSizeUseCase: getLocalItemSizeUseCase,
     private val getLocalItemsUseCase: getLocalItemsUseCase,
-    private val deleteAllItemsUseCase: deleteAllItemsUseCase
+    private val deleteAllItemsUseCase: deleteAllItemsUseCase,
+    private val getTotalPriceUseCase: getTotalPriceUseCase,
+    private val postOrdersUseCase: postOrdersUseCase
 
 ) :
     ViewModel() {
-    private val _localListSizeLiveData = MutableLiveData<Int>()
-    val localListSİzeLiveData: LiveData<Int> = _localListSizeLiveData
 
     private val _items = MutableStateFlow<List<Item>>(emptyList())
     val items: StateFlow<List<Item>> = _items
-    fun getItemSize(){
+    fun getItemSize() {
         viewModelScope.launch {
             getLocalItemSizeUseCase.getItemsSize().collect {
                 if (it != null) {
-                    _localListSizeLiveData.value = it
-                }else {
-                    _localListSizeLiveData.value=0
+                    _viewState.update { viewState ->
+                        viewState.copy(
+                            localListSize = it
+                        )
+                    }
+                } else {
+                    _viewState.update { viewState ->
+                        viewState.copy(
+                            localListSize = 0
+                        )
+                    }
                 }
             }
 
@@ -101,6 +112,59 @@ class SharedViewModel @Inject constructor(
     fun updateDataBase(item: Item) {
         viewModelScope.launch {
             dataBaseUseCase(item)
+        }
+    }
+
+    fun getTotalPrice() {
+        viewModelScope.launch {
+            getTotalPriceUseCase.getTotalPrice().collect {
+                _viewState.update { viewState ->
+                    viewState.copy(
+                        totalPrice = it
+                    )
+                }
+            }
+        }
+    }
+
+    fun postOrders(posts: Posts) {
+        viewModelScope.launch {
+            postOrdersUseCase.postOrders(posts).collect { response ->
+                when (response.status) {
+                    ResponseStatus.LOADING -> _viewState.update { viewState ->
+                        viewState.copy(
+                            isLoading = true,
+                            errorMessage = null
+                        )
+                    }
+
+                    ResponseStatus.SUCCESS -> _viewState.update { viewState ->
+                        viewState.copy(
+                            isLoading = false,
+                            errorMessage = null,
+                            postResponse = response.data
+                        )
+                    }
+
+                    else -> {
+                        _viewState.update { viewState ->
+                            viewState.copy(
+                                isLoading = false,
+                                errorMessage = response.message
+                            )
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    fun resetPostResponse() {
+        _viewState.update { viewState ->
+            viewState.copy(
+                postResponse = null
+            )
         }
     }
 

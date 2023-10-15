@@ -12,7 +12,8 @@ class ItemMapper {
             imageUrl = itemResponse.imageUrl,
             name = itemResponse.name,
             price = itemResponse.price,
-            stock = itemResponse.stock
+            stock = itemResponse.stock,
+            totalOrder = itemResponse.totalOrder
         )
     }
 

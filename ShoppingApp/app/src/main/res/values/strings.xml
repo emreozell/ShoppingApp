@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">ShoppingApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sepetText">Sepet</string>
+    <string name="silText">Sil</string>
+    <string name="kapatText">Kapat</string>
+    <string name="toplamText">Toplam:</string>
+    <string name="sepetiOnaylaText">Sepeti Onayla</string>
+    <string name="minikBakkalText">Minik Bakkal</string>
+    <string name="zeroText">0</string>
+    <string name="stock_not_enough">Stockta yeterli ürün bulunmamaktadır.</string>
+    <string name="cart_delete_title">Sepeti Sil</string>
+    <string name="cart_delete_message">Sepeti boşaltmak istiyor musunuz?</string>
+    <string name="order_status_title">Sipariş Durumu</string>
+    <string name="order_number_title">Sipariş Numarası</string>
+    <string name="total_price_default">0.0</string>
+    <string name="hayır_text">Hayır</string>
+    <string name="evet_text">Evet</string>
+    <string name="tamam_text">Tamam</string>
 </resources>

@@ -8,6 +8,8 @@ import com.example.shoppingapp.data.remote.ItemResponse
 import com.example.shoppingapp.data.remote.ApiFactory
 import com.example.shoppingapp.data.local.CartDAO
 import com.example.shoppingapp.domain.repository.HomeRepository
+import com.example.shoppingapp.domain.model.Posts
+import com.example.shoppingapp.data.remote.SendResponse
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -88,6 +90,34 @@ class HomeRepositoryImpl @Inject constructor(
     override suspend fun getLocalItems(): Flow<List<Item>> {
         return cartDAO.getAllItems().map { itemEntities ->
             ItemMapper().mapItemEntitiesToItems(itemEntities)
+        }
+    }
+
+    override suspend fun getTotalPrice(): Flow<Double?> =cartDAO.getTotalPrice()
+    override suspend fun postOrders(posts: Posts): Flow<Response<SendResponse>> {
+        return callbackFlow {
+            trySend(Response.Loading)
+           val call= apiFactory.sendProducts(posts)
+            call.enqueue(object : Callback<SendResponse> {
+                override fun onResponse(
+                    call: Call<SendResponse>,
+                    response: retrofit2.Response<SendResponse>
+                ) {
+                    val itemResponses = response.body()
+                    trySend(Response.Success(_data = itemResponses))
+                }
+
+                override fun onFailure(call: Call<SendResponse>, t: Throwable) {
+                    trySend(
+                        Response.Error(
+                            _code = t.hashCode().toString(),
+                            _message = t.localizedMessage
+                        )
+                    )
+                }
+
+            })
+            awaitClose()
         }
     }
 

@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.shoppingapp.R
 import com.example.shoppingapp.databinding.HomeRecyclerviewItemBinding
+import com.example.shoppingapp.utils.clickWithDebounce
 
 
 class HomeAdapter(
@@ -42,10 +44,18 @@ class HomeAdapter(
             Glide.with(context)
                 .load(itemList[position].imageUrl)
                 .into(foodsImageView)
-            addButton.setOnClickListener {
-                if (  itemList[position].stock==itemList[position].totalOrder){
-                    Toast.makeText(context,"Stockta yeterli ürün bulunmamaktadır.",Toast.LENGTH_SHORT).show()
-                }else{
+            if (itemList[position].totalOrder > 0) {
+                minusButton.visibility = View.VISIBLE
+                sizeTextview.visibility = View.VISIBLE
+            }
+            addButton.clickWithDebounce {
+                if (itemList[position].stock == itemList[position].totalOrder) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.stock_not_enough),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
                     itemList[position].totalOrder += 1
                     if (itemList[position].totalOrder > 0) {
                         minusButton.visibility = View.VISIBLE
@@ -56,7 +66,7 @@ class HomeAdapter(
                 }
 
             }
-            minusButton.setOnClickListener {
+            minusButton.clickWithDebounce {
                 itemList[position].totalOrder -= 1
                 if (itemList[position].totalOrder == 0) {
                     minusButton.visibility = View.GONE

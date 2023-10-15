@@ -14,6 +14,7 @@ import com.example.shoppingapp.base.BaseFragment
 import com.example.shoppingapp.databinding.FragmentHomeBinding
 import com.example.shoppingapp.ui.SharedViewModel
 import com.example.shoppingapp.utils.CustomAdaptiveDecoration
+import com.example.shoppingapp.utils.clickWithDebounce
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -23,13 +24,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var homeAdapter: HomeAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.localListSİzeLiveData.observe(viewLifecycleOwner) { localListSize ->
-            binding.homeCartCount.text=localListSize.toString()
+        binding.homeRecyclerview.apply {
+            layoutManager = GridLayoutManager(requireContext(), 3)
+            addItemDecoration(
+                CustomAdaptiveDecoration(
+                    context = requireContext(),
+                    spanCount = 3,
+                    spacingHorizontal = 10,
+                    spacingVertical = 10
+                )
+            )
         }
-        binding.homeCartView.setOnClickListener {
+
+        binding.homeCartView.clickWithDebounce {
             findNavController().navigate(R.id.action_homeFragment_to_cartFragment)
         }
+        viewModel.getLocalItems()
         viewModel.getItems()
         viewModel.getItemSize()
         observeData()
@@ -40,6 +50,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.viewState.collect { viewState ->
+                    binding.homeCartCount.text = viewState.localListSize.toString()
                     if (viewState.errorMessage != null) {
 
 
@@ -48,19 +59,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             binding.homeProgressBar.isVisible = it
                         }
                         if (viewState.itemList != null) {
-                            homeAdapter = HomeAdapter(viewState.itemList, requireContext())
-                            binding.homeRecyclerview.apply {
-                                adapter = homeAdapter
-                                layoutManager = GridLayoutManager(requireContext(), 3)
-                                addItemDecoration(
-                                    CustomAdaptiveDecoration(
-                                        context = requireContext(),
-                                        spanCount = 3,
-                                        spacingHorizontal = 10,
-                                        spacingVertical = 10
-                                    )
-                                )
+                            val itemList = viewModel.items.value
+
+                            itemList.forEach { item1 ->
+                                viewState.itemList.forEach { item2 ->
+                                    if (item1.id == item2.id) {
+                                        item2.totalOrder = item1.totalOrder
+                                    }
+                                }
+
                             }
+                            homeAdapter = HomeAdapter(viewState.itemList, requireContext())
+                            binding.homeRecyclerview.adapter=homeAdapter
+
                             homeAdapter.onItemClick { item ->
                                 viewModel.updateDataBase(item)
                             }
