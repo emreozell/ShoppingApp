@@ -13,7 +13,7 @@
     <string name="cart_delete_message">Sepeti boşaltmak istiyor musunuz?</string>
     <string name="order_status_title">Sipariş Durumu</string>
     <string name="order_number_title">Sipariş Numarası</string>
-    <string name="total_price_default">0.0</string>
+    <string name="total_price_default">₺0.0</string>
     <string name="hayır_text">Hayır</string>
     <string name="evet_text">Evet</string>
     <string name="tamam_text">Tamam</string>

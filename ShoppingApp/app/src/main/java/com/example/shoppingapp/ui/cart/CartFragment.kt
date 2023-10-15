@@ -1,6 +1,7 @@
 package com.example.shoppingapp.ui.cart
 
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
@@ -73,12 +74,13 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.viewState.collect {
                     if (it.totalPrice != null) {
-                        binding.totalPrice.text = it.totalPrice.toString()
+                        binding.totalPrice.text = "₺" + it.totalPrice.toString()
                     } else {
                         binding.totalPrice.text = getString(R.string.total_price_default)
                     }
@@ -87,7 +89,13 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
                         val alertDialog = AlertDialog.Builder(requireContext())
 
                         alertDialog.setTitle(getString(R.string.order_status_title))
-                        alertDialog.setMessage("${getString(R.string.order_number_title)} ${it.postResponse.orderID}\n${getString(R.string.order_status_title)}: ${it.postResponse.message}")
+                        alertDialog.setMessage(
+                            "${getString(R.string.order_number_title)} ${it.postResponse.orderID}\n${
+                                getString(
+                                    R.string.order_status_title
+                                )
+                            }: ${it.postResponse.message}"
+                        )
                         alertDialog.setPositiveButton(getString(R.string.tamam_text)) { dialog, which ->
                             dialog.dismiss()
                             viewModel.deleteAllItems()

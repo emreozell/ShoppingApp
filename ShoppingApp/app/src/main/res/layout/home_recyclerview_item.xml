@@ -1,94 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/size8"
-    app:cardElevation="@dimen/size0"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:cardElevation="@dimen/size0">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/foods_recyclerview_item_constraint_layout"
+        android:id="@+id/home_recyclerview_item_constraint_layout"
         android:layout_width="match_parent"
-        android:padding="@dimen/size5"
+        android:layout_height="match_parent"
         android:background="@drawable/light_grey_background"
-        android:layout_height="match_parent">
+        android:padding="@dimen/size5">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/foodsImageView"
+            android:id="@+id/homeItemImageView"
             android:layout_width="@dimen/size44"
             android:layout_height="@dimen/size44"
             android:layout_marginTop="@dimen/size8"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toTopOf="@+id/foodsTitleTextView"
+            app:layout_constraintBottom_toTopOf="@+id/homeTitleTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_button"
             app:layout_constraintVertical_chainStyle="spread"
             app:shapeAppearanceOverlay="@style/circulerImageView" />
 
         <TextView
-            android:id="@+id/foodsTitleTextView"
+            android:id="@+id/homeTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="@dimen/body1Size"
-            app:layout_constraintBottom_toTopOf="@+id/foodsIngredientsTextView"
-            app:layout_constraintEnd_toEndOf="@+id/foodsImageView"
+            app:layout_constraintBottom_toTopOf="@+id/homeItemPriceTextView"
+            app:layout_constraintEnd_toEndOf="@+id/homeItemImageView"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/foodsImageView"
-            app:layout_constraintTop_toBottomOf="@+id/foodsImageView" />
+            app:layout_constraintStart_toStartOf="@+id/homeItemImageView"
+            app:layout_constraintTop_toBottomOf="@+id/homeItemImageView" />
 
         <TextView
-            android:id="@+id/foodsIngredientsTextView"
+            android:id="@+id/homeItemPriceTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:maxLines="2"
             android:layout_marginStart="@dimen/size12"
             android:layout_marginEnd="@dimen/size12"
             android:letterSpacing="0.01"
+            android:maxLines="2"
             android:textAlignment="center"
             android:textColor="@color/light_grey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/foodsTitleTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/homeTitleTextView" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/add_button"
             android:layout_width="@dimen/size10"
             android:layout_height="@dimen/size10"
+            android:layout_marginBottom="@dimen/size5"
             android:background="@drawable/add_button"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/size_textview"
             android:layout_width="@dimen/size10"
             android:layout_height="@dimen/size10"
             android:layout_marginEnd="@dimen/size5"
             android:background="@color/light_blue"
-            android:visibility="invisible"
             android:gravity="center"
             android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/add_button"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/minus_button"
             android:layout_width="@dimen/size10"
             android:layout_height="@dimen/size10"
-            android:visibility="invisible"
             android:layout_marginEnd="10dp"
             android:background="@drawable/minus_button"
-            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/size_textview"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

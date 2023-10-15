@@ -37,13 +37,13 @@ class HomeAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.apply {
-            foodsTitleTextView.text = itemList[position].name
-            foodsIngredientsTextView.text =
+            homeTitleTextView.text = itemList[position].name
+            homeItemPriceTextView.text =
                 "${itemList[position].currency + itemList[position].price.toString()}"
             sizeTextview.text = itemList[position].totalOrder.toString()
             Glide.with(context)
                 .load(itemList[position].imageUrl)
-                .into(foodsImageView)
+                .into(homeItemImageView)
             if (itemList[position].totalOrder > 0) {
                 minusButton.visibility = View.VISIBLE
                 sizeTextview.visibility = View.VISIBLE

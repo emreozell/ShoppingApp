@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
     private val viewModel: SharedViewModel by activityViewModels()
+    private var firstOpen = true
     private lateinit var homeAdapter: HomeAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,18 +60,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             binding.homeProgressBar.isVisible = it
                         }
                         if (viewState.itemList != null) {
-                            val itemList = viewModel.items.value
+                            if (firstOpen == true) {
+                                val itemList = viewModel.items.value
 
-                            itemList.forEach { item1 ->
-                                viewState.itemList.forEach { item2 ->
-                                    if (item1.id == item2.id) {
-                                        item2.totalOrder = item1.totalOrder
+                                itemList.forEach { item1 ->
+                                    viewState.itemList.forEach { item2 ->
+                                        if (item1.id == item2.id) {
+                                            item2.totalOrder = item1.totalOrder
+                                        }
                                     }
-                                }
 
+                                }
+                                firstOpen = false
                             }
                             homeAdapter = HomeAdapter(viewState.itemList, requireContext())
-                            binding.homeRecyclerview.adapter=homeAdapter
+                            binding.homeRecyclerview.adapter = homeAdapter
 
                             homeAdapter.onItemClick { item ->
                                 viewModel.updateDataBase(item)

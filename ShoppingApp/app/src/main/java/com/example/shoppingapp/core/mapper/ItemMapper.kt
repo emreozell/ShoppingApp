@@ -13,7 +13,6 @@ class ItemMapper {
             name = itemResponse.name,
             price = itemResponse.price,
             stock = itemResponse.stock,
-            totalOrder = itemResponse.totalOrder
         )
     }
 
