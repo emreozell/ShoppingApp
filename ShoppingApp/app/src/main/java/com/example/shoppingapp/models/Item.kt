@@ -8,5 +8,6 @@ data class Item(
     val imageUrl: String?,
     val name: String?,
     val price: Double?,
-    val stock: Int?
+    val stock: Int?,
+    var totalOrder:Int=0,
 )
