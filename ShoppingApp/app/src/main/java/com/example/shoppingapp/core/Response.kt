@@ -1,4 +1,4 @@
-package com.example.shoppingapp.domain.models
+package com.example.shoppingapp.core
 
 sealed class Response<out T>(val status: ResponseStatus?, val data: T?, val message: String?) {
     data class Success<out T>(val _data: T?) : Response<T>(

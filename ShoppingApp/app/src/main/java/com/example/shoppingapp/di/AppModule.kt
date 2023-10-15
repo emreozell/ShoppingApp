@@ -2,8 +2,7 @@ package com.example.shoppingapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.shoppingapp.room.CartDAO
-import com.example.shoppingapp.room.CartDataBase
+import com.example.shoppingapp.data.local.CartDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

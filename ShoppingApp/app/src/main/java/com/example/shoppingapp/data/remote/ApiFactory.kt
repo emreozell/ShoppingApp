@@ -1,6 +1,5 @@
-package com.example.shoppingapp.network
+package com.example.shoppingapp.data.remote
 
-import com.example.shoppingapp.models.ItemResponse
 import retrofit2.Call
 import retrofit2.http.GET
 

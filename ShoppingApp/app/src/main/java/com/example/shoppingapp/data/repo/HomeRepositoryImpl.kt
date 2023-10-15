@@ -1,15 +1,17 @@
-package com.example.shoppingapp.ui
+package com.example.shoppingapp.data.repo
 
-import com.example.shoppingapp.domain.models.Response
-import com.example.shoppingapp.models.Item
-import com.example.shoppingapp.models.ItemEntity
-import com.example.shoppingapp.models.ItemMapper
-import com.example.shoppingapp.models.ItemResponse
-import com.example.shoppingapp.network.ApiFactory
-import com.example.shoppingapp.room.CartDAO
+import com.example.shoppingapp.core.Response
+import com.example.shoppingapp.domain.model.Item
+import com.example.shoppingapp.data.local.ItemEntity
+import com.example.shoppingapp.core.mapper.ItemMapper
+import com.example.shoppingapp.data.remote.ItemResponse
+import com.example.shoppingapp.data.remote.ApiFactory
+import com.example.shoppingapp.data.local.CartDAO
+import com.example.shoppingapp.domain.repository.HomeRepository
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.map
 import retrofit2.Call
 import retrofit2.Callback
 import javax.inject.Inject
@@ -82,6 +84,13 @@ class HomeRepositoryImpl @Inject constructor(
 
     }
 
-    override suspend fun getLocalItemsSize():Flow<Int> = cartDAO.getTotalCount()
+    override suspend fun getLocalItemsSize():Flow<Int?> = cartDAO.getTotalCount()
+    override suspend fun getLocalItems(): Flow<List<Item>> {
+        return cartDAO.getAllItems().map { itemEntities ->
+            ItemMapper().mapItemEntitiesToItems(itemEntities)
+        }
+    }
+
+    override suspend fun deleteAllItems() =cartDAO.deleteAll()
 
 }

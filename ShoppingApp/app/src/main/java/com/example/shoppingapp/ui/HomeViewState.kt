@@ -1,6 +1,6 @@
 package com.example.shoppingapp.ui
 
-import com.example.shoppingapp.models.Item
+import com.example.shoppingapp.domain.model.Item
 
 
 data class HomeViewState(

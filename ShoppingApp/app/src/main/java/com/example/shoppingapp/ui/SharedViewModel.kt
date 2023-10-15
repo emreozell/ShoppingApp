@@ -4,29 +4,53 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shoppingapp.domain.models.ResponseStatus
-import com.example.shoppingapp.models.Item
+import com.example.shoppingapp.core.ResponseStatus
+import com.example.shoppingapp.domain.useCase.dataBaseUseCase
+import com.example.shoppingapp.domain.useCase.deleteAllItemsUseCase
+import com.example.shoppingapp.domain.useCase.getItemsUseCase
+import com.example.shoppingapp.domain.useCase.getLocalItemSizeUseCase
+import com.example.shoppingapp.domain.useCase.getLocalItemsUseCase
+import com.example.shoppingapp.domain.model.Item
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class SharedViewModel @Inject constructor(
     private val getItemsUseCase: getItemsUseCase,
     private val dataBaseUseCase: dataBaseUseCase,
-    private val getLocalItemSizeUseCase: getLocalItemSizeUseCase
+    private val getLocalItemSizeUseCase: getLocalItemSizeUseCase,
+    private val getLocalItemsUseCase: getLocalItemsUseCase,
+    private val deleteAllItemsUseCase: deleteAllItemsUseCase
+
 ) :
     ViewModel() {
     private val _localListSizeLiveData = MutableLiveData<Int>()
     val localListSİzeLiveData: LiveData<Int> = _localListSizeLiveData
 
-    init {
+    private val _items = MutableStateFlow<List<Item>>(emptyList())
+    val items: StateFlow<List<Item>> = _items
+    fun getItemSize(){
         viewModelScope.launch {
-            getLocalItemSizeUseCase.getAllItems().collect {
-                _localListSizeLiveData.value = it
+            getLocalItemSizeUseCase.getItemsSize().collect {
+                if (it != null) {
+                    _localListSizeLiveData.value = it
+                }else {
+                    _localListSizeLiveData.value=0
+                }
+            }
+
+        }
+    }
+
+    fun getLocalItems() {
+        viewModelScope.launch {
+            getLocalItemsUseCase.getAllItems().collect {
+                _items.value = it
             }
         }
     }
@@ -65,6 +89,12 @@ class HomeViewModel @Inject constructor(
                         }
                     }
                 }
+        }
+    }
+
+    fun deleteAllItems() {
+        viewModelScope.launch {
+            deleteAllItemsUseCase.deleteAll()
         }
     }
 

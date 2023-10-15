@@ -1,6 +1,6 @@
 package com.example.shoppingapp.di
 
-import com.example.shoppingapp.network.ApiFactory
+import com.example.shoppingapp.data.remote.ApiFactory
 import com.example.shoppingapp.BuildConfig
 import com.example.shoppingapp.utils.Constants.BASE_URL
 import dagger.Module

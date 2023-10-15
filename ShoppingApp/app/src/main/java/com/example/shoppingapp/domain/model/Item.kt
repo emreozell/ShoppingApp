@@ -1,4 +1,4 @@
-package com.example.shoppingapp.models
+package com.example.shoppingapp.domain.model
 
 
 

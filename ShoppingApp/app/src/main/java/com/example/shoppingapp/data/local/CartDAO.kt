@@ -1,11 +1,10 @@
-package com.example.shoppingapp.room
+package com.example.shoppingapp.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.shoppingapp.models.ItemEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -30,5 +29,5 @@ interface CartDAO {
     suspend fun deleteAll()
 
     @Query("SELECT SUM(totalOrder) FROM items")
-    fun getTotalCount() : Flow<Int>
+    fun getTotalCount() : Flow<Int?>
 }

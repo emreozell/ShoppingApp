@@ -5,13 +5,12 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.HomeFragment">
+    tools:context=".ui.home.HomeFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar_constraint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:background="#DDE3E3"
-        android:paddingVertical="5dp"
         android:paddingHorizontal="15dp"
         app:layout_constraintTop_toTopOf="parent">
         <TextView

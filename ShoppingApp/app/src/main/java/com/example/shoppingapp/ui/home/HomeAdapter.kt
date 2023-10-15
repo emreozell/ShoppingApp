@@ -1,7 +1,7 @@
-package com.example.shoppingapp.ui
+package com.example.shoppingapp.ui.home
 
 import android.content.Context
-import com.example.shoppingapp.models.Item
+import com.example.shoppingapp.domain.model.Item
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
